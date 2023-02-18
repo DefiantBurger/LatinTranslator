@@ -1,1 +1,6 @@
 .vercel
+.venv
+.idea
+vercel.json
+.gitignore
+requirements.txt
