@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %} Latin {% endblock %}
+
+{% block content %}
+<script>
+	function searchLatin() {
+		search("latin", "keyword");
+	}
+
+	function searchEnglish() {
+		search("english", "english");
+	}
+
+	function search(lang, key) {
+		let word = document.getElementById(lang).value;
+		word = word.trim();
+
+		let words = [];
+		if (word.includes(" ")) {
+			words = word.split(" ");
+		} else {
+			words = [word];
+		}
+
+		words.reverse();
+
+		let contentContainer = document.getElementById("contentContainer");
+		contentContainer.prepend();
+
+		words.forEach(function (w) {
+			const response = fetch("/", {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify([lang, w])
+			}).then(data => {
+				if (data.ok) {
+					let text = document.createElement("div")
+					text.classList.add("content")
+					let translation = data.headers.get("translation")
+					translation = unEscape(translation)
+					translation = translation.replace(/<br\s*[\/]?>/gi, "\n")
+					text.innerText += translation
+					contentContainer.prepend(text)
+
+					let strong = document.createElement("strong")
+					strong.classList.add("content-title")
+					strong.innerText = data.headers.get("word")
+					text.prepend(strong)
+
+					// let iframe = document.createElement("iframe");
+					// iframe.src = "https://archives.nd.edu/cgi-bin/wordz.pl?" + key + "=" + w;
+					// iframe.className += "content";
+					//
+					// iframe.onload = function () {
+					// 	iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+					// 	iframe.style.width = iframe.contentWindow.document.body.scrollWidth + 'px';
+					// };
+					//
+					// contentContainer.prepend(iframe);
+				} else {
+					console.log(data);
+				}
+			}).catch(error => {
+				console.log(error);
+			});
+
+		});
+	}
+
+	function doSearch() {
+		let latin = document.getElementById("latin").value;
+		latin = latin.trim();
+		let english = document.getElementById("english").value;
+		english = english.trim();
+		let returnVal = "";
+		let activeId = document.activeElement.id
+		// console.log(activeId)
+		if (latin !== "" && activeId === "latin") {
+			searchLatin();
+			returnVal = "latin";
+		} else if (english !== "" && activeId === "english") {
+			searchEnglish();
+			returnVal = "english";
+		}
+		return returnVal;
+	}
+
+	// You may think this code sucks, but instead codepen sucks, (or actually probably me), but I couldn't figure out how to reselect the text box without doing this:
+	function reselect(type) {
+		if (type === "latin") {
+			document.getElementById("latin").select();
+		} else if (type === "english") {
+			document.getElementById("english").select();
+		}
+	}
+
+	document.onkeypress = function (e) {
+		e = e || window.event;
+		if (e.keyCode === 13) {
+			let type = doSearch();
+			reselect(type);
+		}
+	};
+</script>
+<style>
+	#container {
+		height: 100%;
+		position: relative;
+	}
+
+	.content {
+		border: none;
+		width: 100%;
+		height: 100%;
+	}
+</style>
+<div id="inputStuff">
+	<label for="latin">Latin Word:</label>
+	<input type="text" id="latin" name="latin">
+	<button onclick="searchLatin()">Search</button>
+	<br/><br/>
+	<label for="english">English Word:</label>
+	<input type="text" id="english" name="english">
+	<button onclick="searchEnglish()">Search</button>
+</div>
+<div id="contentContainer">
+
+</div>
+{% endblock %}

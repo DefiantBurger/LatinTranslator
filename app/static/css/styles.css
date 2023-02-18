@@ -1,0 +1,39 @@
+body {
+	font-family: sans-serif;
+	background-color: #f2f5f8;
+}
+
+.btn, .no-outline {
+	border: none;
+}
+
+.content {
+	margin-top: 2%;
+	margin-left: 5%;
+	margin-right: 5%;
+}
+
+.content-title {
+	margin-left: -1%;
+}
+
+.only-right-border {
+	border-radius: 0 0.5em 0.5em 0;
+}
+
+h1 {
+	text-align: center;
+}
+
+.list-title {
+	background-color: #e9ecef;
+}
+
+#globaldataform {
+	margin-left: 25%;
+	margin-right: 25%
+}
+
+#savedfigures {
+	display: flex;
+}

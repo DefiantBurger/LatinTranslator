@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+	{% block prehead %}{% endblock %}
+
+	<link href="/static/css/styles.css" rel="stylesheet">
+
+	<script src="/static/javascript/scripts.js"></script>
+
+	<title>{% block title %} Home {% endblock %}</title>
+
+	<link href="/static/svgs/icons8-code-blocks.svg" rel="icon">
+
+	{% block posthead %}{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/">
+			<img src="/static/svgs/icons8-code-blocks.svg" alt="Logo" width="30" height="24"
+				 class="d-inline-block align-text-top">
+			LatinTranslator.org
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLinks"
+				aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse justify-content-between" id="navbarLinks">
+			<ul class="navbar-nav navbar-links">
+				<li class="navbar-nav">
+					<a class="nav-item nav-link" id="home" href="/">Home</a>
+				</li>
+			</ul>
+			<div>
+				<button type="button" class="btn btn-outline-secondary no-outline">
+					Report an Issue
+				</button>
+				<button type="button" class="btn btn-outline-secondary no-outline">
+					Request a Feature
+				</button>
+			</div>
+		</div>
+	</div>
+</nav>
+<div class="flashes">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+		{% if messages %}
+			{% for category, message in messages %}
+				{% if category == 'error' %}
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% else %}
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+</div>
+<wbr>
+<div class="content">
+	{% block content %} {% endblock %}
+</div>
+<script src="/static/javascript/bootstrap.bundle.min.js"></script>
+</body>
+</html>
