@@ -53,26 +53,25 @@
 						title.classList.add("content-title")
 
 						let title_word = document.createElement('strong');
-						let word = data.headers.get("word")
-						title_word.textContent = word
+						title_word.textContent = data.headers.get("word")
 						title.appendChild(title_word)
 
 						title.appendChild(document.createTextNode(' '));
 
-						let parts = data.headers.get("parts").split(",")
-						parts.forEach(prt => {
-							let posLink = document.createElement("a")
-							let pos = prt.slice(0, -2)
-							let valid = Boolean(parseInt(prt.slice(-1)))
-							posLink.innerText = pos
-							posLink.href = `https://latindictionary.wikidot.com/${posToFull[pos]}:${word}`
-							if (valid)
-								posLink.classList.add("link-primary")
-							else
-								posLink.classList.add("link-danger")
-							title.appendChild(posLink)
-							title.appendChild(document.createTextNode(' '));
-						})
+						{#let parts = data.headers.get("parts").split(",")#}
+						{#parts.forEach(prt => {#}
+						{#	let posLink = document.createElement("a")#}
+						{#	let pos = prt.slice(0, -2)#}
+						{#	let valid = Boolean(parseInt(prt.slice(-1)))#}
+						{#	posLink.innerText = pos#}
+						{#	posLink.href = `https://latindictionary.wikidot.com/${posToFull[pos]}:${word}`#}
+						{#	if (valid)#}
+						{#		posLink.classList.add("link-primary")#}
+						{#	else#}
+						{#		posLink.classList.add("link-danger")#}
+						{#	title.appendChild(posLink)#}
+						{#	title.appendChild(document.createTextNode(' '));#}
+						{# })#}
 
 						text.appendChild(title)
 
